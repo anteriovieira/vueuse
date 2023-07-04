@@ -2,7 +2,7 @@ import { customRef, nextTick, watch } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import type { RouteLocationRaw, RouteParamValueRaw } from 'vue-router'
+import type { LocationAsRelativeRaw, RouteParamValueRaw } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
 
 const _cache = new WeakMap()
@@ -64,9 +64,7 @@ export function useRouteParams<
         trigger()
 
         nextTick(() => {
-          const { name: pathName, path, ...otherRouteParams } = route
-          const routeParams = { name: pathName, ...otherRouteParams }
-          router[toValue(mode)]({ ...routeParams, params: { ...route.params, ...Object.fromEntries(_params.entries()) } } as RouteLocationRaw)
+          router[toValue(mode)]({params: { ...route.params, ...Object.fromEntries(_params.entries()) } } as LocationAsRelativeRaw)
         })
       },
     }
